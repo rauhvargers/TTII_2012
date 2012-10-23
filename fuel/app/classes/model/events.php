@@ -1,12 +1,10 @@
 <?php
-
-namespace Model;
 /**
  * Description of events
  *
  * @author krissr
  */
-class Events extends \Model {
+class Model_Events extends \Model {
     
     public function get_events() {
   	   $example_return = array(

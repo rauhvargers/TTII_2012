@@ -1,6 +1,6 @@
 <?php
 
-use Model\Events;
+use \Model_Events;
 /**
  * Description of event
  *
@@ -30,9 +30,7 @@ class Controller_Event extends Controller_Template {
 	$view_vars = array();
 	$view_vars["the_date"] = date("H:i:s");
 	$view_vars["title"] = "<h1>List</h1> of events in " . $view_vars["the_date"];
-
-	
-//	$view_vars["event_dates"] = array("2012-10-20", "2012-10-22", "2012-10-30");
+	$view_vars["event_dates"] = array("2012-10-20", "2012-10-22", "2012-10-30");
 
 	//since we are inheriting the Controller_Template,
 	//template placeholders have to be filled.
@@ -45,7 +43,7 @@ class Controller_Event extends Controller_Template {
 	// as the second parameter as View::forge does. (don't know why)
 	//Hence I have to call "set" 
 	
-	$event_model = new Events();
+	$event_model = new Model_Events();
 //	$view_vars["event_dates"] = 
 	
 	$main_content = ViewModel::forge("event/list");
