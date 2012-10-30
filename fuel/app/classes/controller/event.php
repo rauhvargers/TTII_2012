@@ -97,8 +97,6 @@ class Controller_Event extends Controller_Template {
 	$event_model = Model_Orm_Event::find("all", 
 			    array("related"=> array("agendas", "location")));
 	
-	
-	print_r($event_model);
 	$main_content = View::forge("event/ormlist");
 	$main_content->set("event_model", $event_model);
 	
