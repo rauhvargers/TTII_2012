@@ -26,7 +26,7 @@ class Model_Events extends \Model {
      * @return record set
      */
     public function get_events_db(){
-	$query= \DB::select('id','title')->from('events');
+	$query= \DB::select('id','title')->from('events')->order_by("id","desc");
 	return $query->execute()->as_array();
     }
 

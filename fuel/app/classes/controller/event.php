@@ -1,6 +1,8 @@
 <?php
 
 use \Model_Events;
+use \Model_Crudevent;
+use \Model_Orm_Event;
 /**
  * Description of event
  *
@@ -12,7 +14,6 @@ class Controller_Event extends Controller_Template {
      * Renders a list of current events.
      */
     public function action_list() {
-	
 	/**
 	 * The commented code demonstrates how you can use the 
 	 * `Response` object to send additional headers
@@ -61,18 +62,53 @@ class Controller_Event extends Controller_Template {
 	 */
 	//return Response::forge($view_results);
     }
-    
-//    public function action_test(){
-//	
-//	$results = DB::select('id','title')->from('events')->execute();
-//	foreach ($result as $resultitem) {
-//	    echo $resultitem["title"];
-//	    echo $resultitem["id"];
-//	}
-//	$this->template->page_title = "Test action";
-//	$this->template->page_content = $s;
-//    }
+   
 
+   public function action_crudlist() {
+	$event_model = new Model_Crudevent();
+	$events = $event_model->find_all();
+
+	$main_content = "";
+	foreach ($events as $event) {
+	    $main_content.=$event->id." ".$event->title."---";
+	}
+	
+	//$event = Model_Crudevent::find_by_pk(1);
+	//$event->save();
+	
+	$this->template->page_title = "List of events from CRUD model";
+	$this->template->page_content = $main_content;
+    }
+    
+    public function action_crudupdate() {
+	$event = Model_Crudevent::find_by_pk(1);
+	$event->title = "Title was modified";
+	$event->save();
+
+	$this->template->page_title = "";
+	$this->template->page_content = "";
+    }
+
+    
+    /**
+     * Demonstrates reading data through an ORM model
+     */
+      public function action_ormlist() {		
+	$event_model = Model_Orm_Event::find("all", 
+			    array("related"=> array("agendas", "location")));
+	
+	
+	print_r($event_model);
+	$main_content = View::forge("event/ormlist");
+	$main_content->set("event_model", $event_model);
+	
+	
+	$this->template->page_title = "List of events from ORM model using relations";
+	$this->template->page_content =  $main_content;
+	
+	
+    }
+    
 }
 
 ?>
