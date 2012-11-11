@@ -2,6 +2,8 @@
 /**
  * Description of events
  *
+ *  AN EXAMPLE class, not used.
+ * 
  * @author krissr
  */
 class Model_Events extends \Model {

@@ -9,6 +9,10 @@ class Model_Orm_Event extends Orm\Model
 	    'title' => array(
 		'data_type' => 'varchar',
 		'label' => 'Title of the event'),
+	    'start' => array (
+		    'data_type' => 'date', 
+		    'label' => 'Start date and time of the event'
+		    ), 
 	    'location_id'
 	    );
    
@@ -29,4 +33,15 @@ class Model_Orm_Event extends Orm\Model
 				'model_to' => 'Model_Orm_Location',
 				'key_to' => 'id')
     			    );
+    public static function validate($factory)
+	{
+		$val = Validation::forge($factory);
+		//because we want to check if location is valid
+		$val->add_callable("Model_Orm_Location");
+		
+		$val->add_field('title', 'Title', 'required|max_length[255]');
+		$val->add_field('start', 'Start date', 'required|max_length[50]');
+		$val->add_field('location', 'Event location', 'required|valid_location');
+		return $val;
+	}
 }

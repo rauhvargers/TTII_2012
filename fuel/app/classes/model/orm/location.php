@@ -22,5 +22,28 @@ class Model_Orm_Location extends Orm\Model
 				    'cascade_save' => true,
 				    'cascade_delete' => false)
 				);
+   
+    public static function get_locations()
+    {
+	return \DB::select('id', 'title')->from('location')->execute()->as_array('id', 'title');
+    }
+    
+    
+    /**
+     * A validation function which checks if the number passed 
+     * to it is a valid location ID.
+     * @param type $val
+     * @return boolean
+     */
+    public static function _validation_valid_location($val)
+    {
+	 
 
+	if (Model_Orm_Location::find($val)==null) {
+	    Validation::active()->set_message('valid_location', 
+		'The field "location" must refer to a valid location.');
+	    return false;
+	}
+	return true;
+    }
 }

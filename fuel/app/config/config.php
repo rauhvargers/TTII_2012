@@ -23,7 +23,7 @@ return array(
 	 *
 	 * Set this to null to have it automatically detected.
 	 */
-	'base_url'  => null,
+	'base_url'  => null, //"http://localhost/sites/eventual/",
 
 	/**
 	 * url_suffix - Any suffix that needs to be added to
@@ -41,7 +41,7 @@ return array(
 	 *
 	 * Set this to false or remove if you using mod_rewrite.
 	 */
-	'index_file'  => 'index.php',
+	'index_file'  => false, //'index.php',
 
 	'profiling'  => false,
 
@@ -87,7 +87,7 @@ return array(
 	 * server_gmt_offset	in seconds the server offset from gmt timestamp when time() is used
 	 * default_timezone		optional, if you want to change the server's default timezone
 	 */
-	'server_gmt_offset'  => 0,
+	'server_gmt_offset'  => 2,
 	'default_timezone'   => 'UTC',
 
 	/**
