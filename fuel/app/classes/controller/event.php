@@ -5,7 +5,7 @@ use \Model_Crudevent;
 use \Model_Orm_Event;
 
 /**
- * Description of event
+ * An "event" is the central entity in the "Eventual".
  *
  * @author krissr
  */
@@ -13,6 +13,68 @@ class Controller_Event extends Controller_Template {
 
     public function action_index() {
 	return $this->action_ormlist();
+    }
+
+    /**
+     * Demonstrates reading data through an ORM model
+     */
+    public function action_ormlist() {
+
+	$event_model = Model_Orm_Event::find("all", array("related" => array("agendas", "location")));
+
+	$main_content = View::forge("event/ormlist");
+	$main_content->set("event_model", $event_model);
+
+
+	$this->template->page_title = "List of events from ORM model using relations";
+	$this->template->page_content = $main_content;
+    }
+
+    /**
+     * Creation of new events.
+     * Works on both the first load, which is typically 
+     * a GET request as on later requests, which are POST.
+     * When POST-ing, a validation is run on input data.
+     * Validation rules taken from "Event" model.
+     */
+    public function action_create() {
+	if (Input::method() == "POST") {
+	    $val = Model_Orm_Event::validate('create');
+	    if ($val->run()) {
+		$newEvent = new Model_Orm_Event();
+		$newEvent->title = $val->validated("title");
+		$newEvent->start = $val->validated("start");
+		$location = Model_Orm_Location::find(Input::post("location"));
+		$newEvent->location = $location;
+		$newEvent->save();
+		Session::set_flash("success", "New event created: " . $val->validated("title"));
+		Response::redirect("event/view/" . $newEvent->id);
+	    } else {
+		Session::set_flash("error", $val->error());
+	    }
+	    $this->template->title = "Trying to save an event";
+	} else {
+	    $this->template->title = "Creating an event";
+	}
+
+	$data = array();
+	$data["locations"] = Model_Orm_Location::get_locations();
+
+	$this->template->page_content = View::forge("event/create", $data);
+    }
+
+    public function action_view($id = null) {
+
+
+	$event = Model_Orm_Event::find($id, array("related" =>
+		    array("agendas", "location")));
+
+	is_null($event) and Response::redirect('Event');
+
+	$data["event"] = $event;
+
+	$this->template->title = "Viewing an event";
+	$this->template->page_content = View::forge("event/view", $data);
     }
 
     /**
@@ -91,69 +153,6 @@ class Controller_Event extends Controller_Template {
 
 	$this->template->page_title = "";
 	$this->template->page_content = "";
-    }
-
-    /**
-     * Demonstrates reading data through an ORM model
-     */
-    public function action_ormlist() {
-
-	$event_model = Model_Orm_Event::find("all", array("related" => array("agendas", "location")));
-
-	$main_content = View::forge("event/ormlist");
-	$main_content->set("event_model", $event_model);
-
-
-	$this->template->page_title = "List of events from ORM model using relations";
-	$this->template->page_content = $main_content;
-    }
-
-    /**
-     * Creation of new events.
-     * The first request is typically a GET, 
-     * in this case only retur
-     *
-     */
-    public function action_create() {
-	if (Input::method() == "POST") {
-	    $val = Model_Orm_Event::validate('create');
-	    if ($val->run()) {
-		$newEvent = new Model_Orm_Event();
-		$newEvent->title = $val->validated("title");
-		$newEvent->start = $val->validated("start");
-		$location = Model_Orm_Location::find(Input::post("location"));
-		$newEvent->location = $location;
-		$newEvent->save();
-		Session::set_flash("success", "New event created: ".$val->validated("title"));
-		Response::redirect("event/view/".$newEvent->id);
-	    } else {
-		Session::set_flash("error", $val->error());
-	    }
-	    $this->template->title = "Trying to save an event";
-	} else {
-	    $this->template->title = "Creating an event";
-	}
-
-	$data = array();
-	$data["locations"] = Model_Orm_Location::get_locations();
-	
-	$this->template->page_content = View::forge("event/create", $data);
-    }
-    
-    public function action_view($id = null){
-	
-	
-	$event = Model_Orm_Event::find($id,
-			    array("related" =>
-					array("agendas", "location")));
-	
-	is_null($event) and Response::redirect('Event');
-	
-	$data["event"] = $event;
-	
-	$this->template->title="Viewing an event";
-	$this->template->page_content = View::forge("event/view", $data);
-	
     }
 
 }
