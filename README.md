@@ -10,11 +10,23 @@ during "Web Technologies II" course at the University of Latvia.
 
 ## Installation
 
-The application is accessed at http://localhost/sites/eventual 
-on the development machine.
+The application is accessed at http://www.eventual.org
+on the development machine (a [hosts file entry](http://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/) 127.0.0.1 = www.eventual.org)
 
 If you decide to change the location, take care to alter the 
 .htaccess file (`RewriteBase` parameter).
+
+The system uses "fuel_dev" database. 
+Use "[install.sql](https://github.com/naivists/TTII_2012/blob/master/install.sql)"script to recreate the structure.
+
+Expected database parameters:
+
+  - server : localhost
+  - database : fuel_dev
+  - user : fuel_dev
+  - password : fuel_dev
+
+Change these in APPPATH/config/development/db.php if needed.
 
 ## What is where
 
