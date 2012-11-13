@@ -1,0 +1,34 @@
+body {font-family:Arial, sans-serif;
+      width:70%;
+      margin:0 auto;
+}
+nav {border-bottom:1px solid blue;}
+.alert-message {
+    font-weight:bold;
+    padding:5px;
+    margin:10px;
+    line-height:1em;
+}
+.alert-message.success {
+    border:1px solid green;
+    background-color: #008000;
+}
+.alert-message.error {
+    border:1px solid red;
+    background-color: indianred;
+    color:white;
+}
+header h1 {
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 20px;
+    margin-top:20px;
+    color:#999; 
+}
+nav ul {
+    zoom:1;
+}
+nav ul li {
+    list-style-type: none;
+    float:left;
+    padding:8px;
+}

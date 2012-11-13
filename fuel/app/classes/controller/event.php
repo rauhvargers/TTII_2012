@@ -11,7 +11,7 @@ use \Model_Orm_Event;
  */
 class Controller_Event extends Controller_Template {
 
-    public function action_index() {
+    public function action_index() {		
 	return $this->action_ormlist();
     }
 
@@ -44,6 +44,7 @@ class Controller_Event extends Controller_Template {
 		$newEvent = new Model_Orm_Event();
 		$newEvent->title = $val->validated("title");
 		$newEvent->start = $val->validated("start");
+		$newEvent->description = $val->validated("description");
 		$location = Model_Orm_Location::find(Input::post("location"));
 		$newEvent->location = $location;
 		$newEvent->save();
@@ -60,14 +61,31 @@ class Controller_Event extends Controller_Template {
 	$data = array();
 	$data["locations"] = Model_Orm_Location::get_locations();
 
+	//since we have "rich form", additional scripts
+	//and stylesheets are needed
+	$this->template->libs_js = array(
+		"http://code.jquery.com/jquery-1.8.2.js",
+		"http://code.jquery.com/ui/1.9.1/jquery-ui.js",
+		"jquery-ui-timepicker-addon.js",
+		"http://cdn.aloha-editor.org/latest/lib/require.js"
+		);
+	$this->template->libs_css = array(
+		"http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css",
+		"datetimepicker.css",
+		"http://cdn.aloha-editor.org/latest/css/aloha.css"
+			);
+
+	
 	$this->template->page_content = View::forge("event/create", $data);
     }
 
-    public function action_view($id = null) {
-
-
-	$event = Model_Orm_Event::find($id, array("related" =>
-		    array("agendas", "location")));
+    public function action_view($id=null) {
+	
+	is_null($id) and Response::redirect('Event');
+	
+	$event = Model_Orm_Event::find($id, 
+				array("related" =>
+				    array("agendas", "location")));
 
 	is_null($event) and Response::redirect('Event');
 

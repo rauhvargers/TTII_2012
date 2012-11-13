@@ -43,7 +43,7 @@ class Controller_Location extends Controller_Template
 	    $data["locations"] = array();
 	    if ($clean_query != "") {
 		$data["locations"] = Model_Orm_Location::query()
-					->where("title", "like", Security::clean($term)."%")
+					->where("title", "like", $clean_query."%")
 					->get();
 	    }
 	    

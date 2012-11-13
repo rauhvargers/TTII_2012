@@ -6,6 +6,10 @@
 <p>
 	<strong>Start date:</strong>
 	<?php echo $event->start; ?></p>
+
+<p>
+	<strong>Description:</strong>
+	<?php echo ($event->description) ? $event->description : "(no description)"; ?></p>
 <p>
     
 <h3>Event agenda</h3>
