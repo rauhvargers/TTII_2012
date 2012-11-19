@@ -29,6 +29,12 @@
     <body>
 	<header>
 	    <h1>&laquo;Eventual&raquo; : an event management system</h1>
+	    <h3><?php if (isset($page_title)) {
+		    echo $page_title;
+		}
+		if (isset($title)) {
+		    echo $title;
+		}?></h3>
 	    <nav>
 		<ul class="clearfix">
 		    <li><a href="/event/">Events</a></li>

@@ -14,7 +14,8 @@ class Model_Orm_Agenda extends Orm\Model
 				      'max_length' => array(200)),
 		    'form' => array('type' => 'text'),
 		    'default' => 'New agenda item',
-		)
+		),
+	     'event_id'
 	    );
     protected static $_belongs_to = 
 			array(
@@ -23,5 +24,9 @@ class Model_Orm_Agenda extends Orm\Model
 				'model_to' => 'Model_Orm_Event',
 				'key_to' => 'id'			    )
 			);
-
+    public static function validate($factory) {
+	$val = Validation::forge($factory);
+	$val->add_field('title', 'Title', 'required|max_length[255]');	
+	return $val;
+    }
 }

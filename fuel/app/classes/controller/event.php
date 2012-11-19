@@ -1,7 +1,5 @@
 <?php
 
-use \Model_Events;
-use \Model_Crudevent;
 use \Model_Orm_Event;
 
 /**
@@ -11,22 +9,25 @@ use \Model_Orm_Event;
  */
 class Controller_Event extends Controller_Template {
 
-    public function action_index() {		
-	return $this->action_ormlist();
-    }
-
     /**
      * Demonstrates reading data through an ORM model
      */
-    public function action_ormlist() {
+    public function action_index() {
 
-	$event_model = Model_Orm_Event::find("all", array("related" => array("agendas", "location")));
+	$event_model = Model_Orm_Event::find("all", array(
+		    //we only want future and current events
+		    "where" => array(
+			array('start', '>=', Date::forge()->format("%Y-%m-%d"))
+		    ),
+		    "order_by" => array("start" => "asc"),
+		    "related" =>
+		    array("agendas", "location")));
 
-	$main_content = View::forge("event/ormlist");
+	$main_content = View::forge("event/list");
 	$main_content->set("event_model", $event_model);
 
 
-	$this->template->page_title = "List of events from ORM model using relations";
+	$this->template->page_title = "List of upcoming events";
 	$this->template->page_content = $main_content;
     }
 
@@ -38,6 +39,8 @@ class Controller_Event extends Controller_Template {
      * Validation rules taken from "Event" model.
      */
     public function action_create() {
+	$data = array(); //to be passed into the view
+
 	if (Input::method() == "POST") {
 	    $val = Model_Orm_Event::validate('create');
 	    if ($val->run()) {
@@ -47,132 +50,199 @@ class Controller_Event extends Controller_Template {
 		$newEvent->description = $val->validated("description");
 		$location = Model_Orm_Location::find(Input::post("location"));
 		$newEvent->location = $location;
+		//first, we save the item without attachments
 		$newEvent->save();
+
+		$errors = $this->try_get_attachments($newEvent);
+
 		Session::set_flash("success", "New event created: " . $val->validated("title"));
 		Response::redirect("event/view/" . $newEvent->id);
 	    } else {
-		Session::set_flash("error", $val->error());
+		//validation did not work. 
+		//But still, there may be uploaded files!
+		$errors = $this->try_get_attachments();
+		Session::set_flash("error", array_merge($val->error(), $errors));
 	    }
 	    $this->template->title = "Trying to save an event";
+	    $data["form_key"] = Input::post("form_key");
 	} else {
+	    //the first GET request
 	    $this->template->title = "Creating an event";
+
+	    //we assign a random value to the form
+	    $data["form_key"] = md5(mt_rand(1000, 10000));
 	}
-
-	$data = array();
 	$data["locations"] = Model_Orm_Location::get_locations();
-
-	//since we have "rich form", additional scripts
-	//and stylesheets are needed
-	$this->template->libs_js = array(
-		"http://code.jquery.com/jquery-1.8.2.js",
-		"http://code.jquery.com/ui/1.9.1/jquery-ui.js",
-		"jquery-ui-timepicker-addon.js",
-		"http://cdn.aloha-editor.org/latest/lib/require.js"
-		);
-	$this->template->libs_css = array(
-		"http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css",
-		"datetimepicker.css",
-		"http://cdn.aloha-editor.org/latest/css/aloha.css"
-			);
-
-	
+	$this->add_rich_form_scripts();
 	$this->template->page_content = View::forge("event/create", $data);
     }
 
-    public function action_view($id=null) {
+    /**
+     * Tries to get attachments from uploaded files
+     * @param type $event
+     * @return array list of errors
+     */
+    private function try_get_attachments($event = null) {
+	//first we check if there is probably a file
+	//already stored from previous submissions.
+	$old_file = Session::get("uploaded_file_" . Input::post("form_key"), null);
+	if ($old_file != null and $event != null) {
+	    $event->poster = $old_file;
+	    $event->save();
+	    return array();
+	}
+
+	//no "old files" exist, let's catch the new ones!
+	$config = array(
+	    'path' => APPPATH . 'files',
+	    'randomize' => false,
+	    'auto_rename' => true,
+	    'ext_whitelist' => array('pdf'),
+	);
+
+	// process the uploaded files in $_FILES
+	Upload::process($config);
+
+	// if there are any valid files
+	if (Upload::is_valid()) {
+	    // save them according to the config
+	    Upload::save();
+	    //call a model method to update the database
+	    $newfile = Upload::get_files(0);
+	    if ($event != null) {
+		$event->poster = $newfile["saved_as"];
+		$event->save();
+		return array(); //done, no errors
+	    } else {
+		//there is no event yet (validation problems)
+		//but there are uploaded files.
+		//We store this information in the session
+		//so that the next time user submits the form
+		//with validation errors fixed, we can attach the "old" file
+		Session::set("uploaded_file_" . Input::post("form_key"), $newfile["saved_as"]);
+		return array(); //no errors here!
+	    }
+	} else {
+	    if (count(Upload::get_errors(0)) > 0)
+		//there was some problem with the files
+		return array("The uploaded file could not be saved");
+	    else
+		return array();
+	}
+    }
+    
+    /**
+     * Forced download of the attached file
+     * @param type $id
+     * @return \Response
+     * @throws HttpNotFoundException
+     */
+    public function action_poster($id = null){
+	//if the event request is not valid, return a 404 error
+	if (is_null($id))
+	    throw new HttpNotFoundException;
 	
-	is_null($id) and Response::redirect('Event');
+	$event = Model_Orm_Event::find($id);
+	if (is_null($event))
+	    throw new HttpNotFoundException;
 	
-	$event = Model_Orm_Event::find($id, 
-				array("related" =>
-				    array("agendas", "location")));
+	if ($event->poster != null) {
+	    //the files are found in subfolder of APPPATH, named "files"
+	    //DS stands for "Directory Separator"
+	    //Since we know it's a PDF file, we force PDF mime type.
+	    $response = new Response();
+	    $response->set_header('Content-Type', 'application/pdf');
+	    $response->set_header('Content-Disposition', 'attachment; filename="'.$event->poster.'"');
+	    $response->body = file_get_contents(APPPATH."files".DS.$event->poster);
+	    return $response;
+	} else {
+	    //no poster file for the current document!
+	    throw new HttpNotFoundException;
+	}
+    }
+
+    public function action_edit($id = null) {
+	//looks up the even in the database
+	//if anything is not OK - redirects back to the list of events
+
+	is_null($id) and Response::redirect('event');
+	$event = Model_Orm_Event::find($id, array("related" =>
+		    array("location")));
 
 	is_null($event) and Response::redirect('Event');
 
-	$data["event"] = $event;
+	//not POST = just read from database
+	if (Input::method() == 'POST') {
+	    $val = Model_Orm_Event::validate("edit");
+	    if ($val->run()) {
+		//validation is OK!
+		$event->title = $val->validated("title");
+		$event->description = $val->validated("description");
+		$event->start = $val->validated("start");
+		$event->location = Model_Orm_Location::find(Input::post("location"));
+		if ($event->save()) {
+		    Session::set_flash("success", "Changes saved successfuly!");
+		} else {
+		    Session::set_flash("error", "Somehow could not save the item.");
+		}
 
-	$this->template->title = "Viewing an event";
-	$this->template->page_content = View::forge("event/view", $data);
+		Response::redirect("event/view/" . $event->id);
+	    } else {
+		//POST data passed, but something wrong with validation
+		Session::set_flash("error", $val->error());
+	    }
+	}
+
+	$data["event"] = $event;
+	$data["locations"] = Model_Orm_Location::get_locations();
+	$this->add_rich_form_scripts();
+	$this->template->title = "Editing the event " . $event->title;
+	$this->template->page_content = View::forge("event/edit", $data);
     }
 
     /**
-     * Renders a list of current events.
+     * Displays information about the event
+     * @param int $id Database ID of the item
      */
-    public function action_list() {
-	/**
-	 * The commented code demonstrates how you can use the 
-	 * `Response` object to send additional headers
-	 */
-//	$response = Response::forge("Hello, world (this is the event list).");
-//	$response->set_header('Content-Type', 'text/plain');
-//	return $response;
+    public function action_view($id = null) {
+	is_null($id) and Response::redirect('Event');
+	$event = Model_Orm_Event::find($id, array("related" =>
+		    array("agendas", "location")));
 
-	/**
-	 * The easiest way to prepare data for a view - 
-	 * an associative array. 
-	 * Array content is not limited to simple types, 
-	 * can contain sub-arrays, objects, etc.
-	 */
-	$view_vars = array();
-	$view_vars["the_date"] = date("H:i:s");
-	$view_vars["title"] = "<h1>List</h1> of events in " . $view_vars["the_date"];
-	$view_vars["event_dates"] = array("2012-10-20", "2012-10-22", "2012-10-30");
+	is_null($event) and Response::redirect('Event');
 
-	//since we are inheriting the Controller_Template,
-	//template placeholders have to be filled.
-	//template is located at APPPATH/views/template.php
-	$this->template->page_title = "List of events";
-
-
-	//Here we use a ViewModel to supplement view data
-	//ViewModel::forge does not accept the data array
-	// as the second parameter as View::forge does. (don't know why)
-	//Hence I have to call "set" 
-
-	$event_model = new Model_Events();
-//	$view_vars["event_dates"] = 
-
-	$main_content = ViewModel::forge("event/list");
-	$main_content->set("the_date", date("H:i:s"));
-	$main_content->set("title", "List of events");
-	$main_content->set("event_dates", $event_model->get_events());
-	$main_content->set("event_dates_mysql", $event_model->get_events_mysql());
-	$main_content->set("event_dates_db", $event_model->get_events_db());
-
-	$this->template->page_content = $main_content;
-
-	/**
-	 * if a template controller action returns a response object, 
-	 * the template is ignored
-	 */
-	//return Response::forge($view_results);
+	//$data["event"] = $event;
+	$event_view = View::forge("event/view");
+	$event_view->set("event", $event);
+	$this->template->title = "Viewing an event";
+	$this->template->page_content = $event_view;
     }
 
-    public function action_crudlist() {
-	$event_model = new Model_Crudevent();
-	$events = $event_model->find_all();
-
-	$main_content = "";
-	foreach ($events as $event) {
-	    $main_content.=$event->id . " " . $event->title . "---";
-	}
-
-	//$event = Model_Crudevent::find_by_pk(1);
-	//$event->save();
-
-	$this->template->page_title = "List of events from CRUD model";
-	$this->template->page_content = $main_content;
+    public function action_delete($id = null) {
+	is_null($id) and Response::redirect('event');
+	$event = Model_Orm_Event::find($id);
+	is_null($event) and Response::redirect('Event');
+	$event->delete();
+	Session::set_flash("success", "Deleted the item ".$event->title);
+	Response::redirect('Event');
     }
+    /**
+     * since we have "rich form", additional scripts
+     * and stylesheets are needed
+     */
+    private function add_rich_form_scripts() {
 
-    public function action_crudupdate() {
-	$event = Model_Crudevent::find_by_pk(1);
-	$event->title = "Title was modified";
-	$event->save();
-
-	$this->template->page_title = "";
-	$this->template->page_content = "";
+	$this->template->libs_js = array(
+	    "http://code.jquery.com/jquery-1.8.2.js",
+	    "http://code.jquery.com/ui/1.9.1/jquery-ui.js",
+	    "jquery-ui-timepicker-addon.js",
+	    "http://cdn.aloha-editor.org/latest/lib/require.js"
+	);
+	$this->template->libs_css = array(
+	    "http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css",
+	    "datetimepicker.css",
+	    "http://cdn.aloha-editor.org/latest/css/aloha.css"
+	);
     }
 
 }
-
-?>

@@ -79,7 +79,7 @@ class Controller_Country extends Controller_Template
 
 			if ($country->save())
 			{
-				Session::set_flash('suc	cess', 'Updated country #' . $id);
+				Session::set_flash('success', 'Updated country #' . $id);
 
 				Response::redirect('country');
 			}

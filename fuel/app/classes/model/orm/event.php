@@ -15,7 +15,10 @@ class Model_Orm_Event extends Orm\Model {
 	    'data_type' => 'date',
 	    'label' => 'Start date and time of the event'
 	),
-	'location_id'
+	'location_id',
+	'poster' => array(
+	    'data_type' => 'varchar',
+	    'label' => 'Poster of the event (PDF document)'),
     );
     protected static $_has_many =
 	    array(
