@@ -13,7 +13,7 @@ foreach ($event_model as $event) :
 	    endforeach;  //foreach agenda item
 	?>
     </ul>
-<? endforeach; //foreach event?>
+<?php endforeach; //foreach event?>
 
     <p>
 	<?php 
