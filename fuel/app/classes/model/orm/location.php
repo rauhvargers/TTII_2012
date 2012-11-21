@@ -25,7 +25,10 @@ class Model_Orm_Location extends Orm\Model
    
     public static function get_locations()
     {
-	return \DB::select('id', 'title')->from('location')->execute()->as_array('id', 'title');
+	return \DB::select('id', 'title')
+		    ->from('location')
+		    ->execute()
+		    ->as_array('id', 'title');
     }
     
     

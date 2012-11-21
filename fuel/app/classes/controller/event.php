@@ -73,6 +73,7 @@ class Controller_Event extends Controller_Template {
 	    $data["form_key"] = md5(mt_rand(1000, 10000));
 	}
 	$data["locations"] = Model_Orm_Location::get_locations();
+	
 	$this->add_rich_form_scripts();
 	$this->template->page_content = View::forge("event/create", $data);
     }

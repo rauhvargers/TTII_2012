@@ -226,6 +226,8 @@ return array(
 		 */
 		'packages'  => array(
 			'orm',
+			'social',
+			'auth'
 		),
 
 		/**
