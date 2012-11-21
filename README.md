@@ -36,3 +36,13 @@ Change these in APPPATH/config/development/db.php if needed.
     This shows the structure of "event" happening at a "location" and having several "agenda" items.
     Detailed list of events is output to the screen in APPPATH/classes/controller/event.php method `action_ormlist()`.
     It employs the view APPPATH/views/event/ormlist.php
+
+## Setting it up in NetBeans
+
+  - Download the code from GitHub. If you don't have a GIT client, 
+    simply take the .zip version: [https://github.com/naivists/TTII_2012/archive/master.zip]
+  - Unzip it somewhere in your computer. This place does not have to be in the "web root"of your 
+    web server. On a Windows computer, you could pick c:\eventual\.
+  - Open up NetBeans IDE. In File menu, choose "Open project". Point to the 
+    directory you have chosen.
+
