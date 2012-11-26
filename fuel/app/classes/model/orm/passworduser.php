@@ -1,5 +1,5 @@
 <?php
-class Model_Orm_User extends Orm\Model {
+class Model_Orm_Passworduser extends Orm\Model {
 
     protected static $_table_name = 'passwordusers';
     protected static $_primary_key = array('user_id');

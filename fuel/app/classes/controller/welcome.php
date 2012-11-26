@@ -32,7 +32,8 @@ class Controller_Welcome extends Controller
 	 */
 	public function action_hello()
 	{
-		return Response::forge(ViewModel::forge('welcome/hello'));
+	    phpinfo();
+	    return Response::forge(ViewModel::forge('welcome/hello'));
 	}
 
 	/**

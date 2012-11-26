@@ -8,7 +8,17 @@ use \Model_Orm_Event;
  * @author krissr
  */
 class Controller_Event extends Controller_Template {
-
+    private $_auth;
+    private $_user_id;
+    
+    public function before() {
+	parent::before();
+	
+	$this->_auth = Auth::instance();
+	$userids = $this->_auth->get_user_id();
+	$this->_user_id = $userids[1];
+	
+    }
     /**
      * Demonstrates reading data through an ORM model
      */
@@ -39,6 +49,11 @@ class Controller_Event extends Controller_Template {
      * Validation rules taken from "Event" model.
      */
     public function action_create() {
+	if ( ! Auth::has_access('events.create') ) {
+	//if ($this->_user_id == 0){
+	    Session::set_flash("error", "Only registered users may create events");
+	    Response::redirect("/") and die();
+	}
 	$data = array(); //to be passed into the view
 
 	if (Input::method() == "POST") {

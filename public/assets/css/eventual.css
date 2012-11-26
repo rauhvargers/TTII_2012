@@ -37,3 +37,10 @@ nav ul li {
     padding:8px;
     
 }
+
+aside#auth{
+    float:right;
+}
+#logout {
+    text-align:right;
+}

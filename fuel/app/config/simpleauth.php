@@ -55,6 +55,9 @@ return array(
 	 * Roles as name => array(location => rights)
 	 */
 	'roles' => array(
+	    "user" => array(
+			"events"=>array("create", "read", "update","delete"),
+			"country"=>array("read"))
 		/**
 		 * Examples
 		 * ---
