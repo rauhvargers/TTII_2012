@@ -48,7 +48,8 @@ return array(
 	'groups' => array(
 	    0    => array('name' => 'Guests', 'roles' => array()),
 	    1    => array('name' => 'Users', 'roles' => array('user')),
-	    100  => array('name' => 'Administrators', 'roles' => array('user', 'admin')),
+	    100  => array('name' => 'Administrators', 
+					'roles' => array('user', 'admin')),
 	),
 
 	/**
@@ -56,8 +57,15 @@ return array(
 	 */
 	'roles' => array(
 	    "user" => array(
-			"events"=>array("create", "read", "update","delete"),
-			"country"=>array("read"))
+			"events"
+			    =>array("create", "read", "update","delete"),
+			"country"
+			    =>array("read")),
+	    "admin" => array(
+			"events"
+			    =>array("create", "read", "update","delete"),
+			"country"
+			    =>array("create", "update","delete"))
 		/**
 		 * Examples
 		 * ---

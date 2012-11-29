@@ -10,6 +10,7 @@ class Controller_Country extends Controller_Template {
 
     public function before() {
 	parent::before();
+	
 	if (Auth::has_access('country.read') == false) {
 	    Session::set_flash("error", "List of countries is very secret!");
 	    Response::redirect("/") and die();

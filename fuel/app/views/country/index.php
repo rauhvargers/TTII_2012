@@ -27,7 +27,12 @@
 <?php else: ?>
 <p>No Countries.</p>
 
-<?php endif; ?><p>
+<?php endif; ?>
+
+<?php if (Auth::has_access("country.create")) :
+?>
+<p>
 	<?php echo Html::anchor('country/create', 'Add new Country', array('class' => 'btn btn-success')); ?>
 
 </p>
+<?php endif; ?>

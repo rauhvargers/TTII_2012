@@ -103,7 +103,7 @@ class Controller_Account extends Controller_Template {
 		// Oops, no soup for you. try to login again. Set some values to
 		// repopulate the username field and give some error text back to the view
 		//$data['username'] = Input::post('username');
-		Session::set_flash("error", "User name or password incorrect");
+		Session::set_flash("error", "User name or password incorrect.");
 		//$data['login_error'] = 'Wrong username/password combo. Try again';
 	    }
 	}
@@ -122,6 +122,7 @@ class Controller_Account extends Controller_Template {
      * Authenticates the user using Facebook.
      */
     public function action_fb() {
+	
 	$fb = Facebook::instance();
 
 
@@ -138,7 +139,6 @@ class Controller_Account extends Controller_Template {
 
 	    //and the user's facebook ID
 	    $fb_id = $user_profile["id"];
-
 
 	    $auth = Auth::instance();
 

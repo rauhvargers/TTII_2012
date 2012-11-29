@@ -56,7 +56,7 @@ if (isset($title)) {
 		else :
 		    echo Html::anchor("account/simpleauth", "Not logged in. Would you like to?");
 		    ?>
-		<?
+		<?php
 		endif;
 		?>
 	    </aside>
