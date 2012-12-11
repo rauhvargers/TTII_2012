@@ -15,15 +15,15 @@
 	    buttonImageOnly: true});
 	
 	    
-//	    $("#locationtext").autocomplete({
-//		source: "http://www.eventual.org/location/search/",
-//		minLength: 1,
-//		select: function( event, ui ) {
-//	                if (ui.item) {
-//			    $("#locationid").val(ui.item.id);
-//			}
-//	            }	
-//	    });
+	//	    $("#locationtext").autocomplete({
+	//		source: "http://www.eventual.org/location/search/",
+	//		minLength: 1,
+	//		select: function( event, ui ) {
+	//	                if (ui.item) {
+	//			    $("#locationid").val(ui.item.id);
+	//			}
+	//	            }	
+	//	    });
 	   
     });
     
@@ -47,23 +47,31 @@
      * The function is invoked by a button click from location dialog
      */
     function saveLocation(){
-	var data = $("#location_title").serialize();
-	$.post("/location/create",
-		data, //POST data we're submitting
-		function(result){//success callback
-		    //if item was actually saved
-		    if (result.id) {
+	var opts = {
+	    type:"POST",    
+	    url: "/location/create",
+	    data: $("#location_title").serialize(), //POST data we're submitting
+	    success: function(result){//success callback
+		//if item was actually saved
+		if (result.id) {
 			
-			var $opt = $("<option/>");
-			$opt.val(result.id);
-			$opt.text($("#location_title").val());
-			$opt.attr("selected","selected");
-			$("#addlocation").before($opt);
+		    var $opt = $("<option/>");
+		    $opt.val(result.id);
+		    $opt.text($("#location_title").val());
+		    $opt.attr("selected","selected");
+		    $("#addlocation").before($opt);
+		    $("#locationform").dialog('close');
+		}
+	    },
+	    statusCode: {
+		403 : function(){
+			alert("Access denied!");
 			$("#locationform").dialog('close');
 		    }
 		},
-		"json"
-		)
+	    dataType: "json"
+	}
+	$.ajax(opts);
     }
 </script>
 <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
@@ -116,12 +124,12 @@
 	    <?php
 	    $location_options = array_merge(
 		    array("0" => "Pick a location"), $locations);
-	    
-	    
+
+
 	    echo Form::select("location", Input::post("location"), $location_options)
 	    ?>
 	</div>
-	<div style="display:none" id="locationform">
+	<div style="display:none" id="locationform" title="Add new location">
 	    <label for="location_title">Title</label>
 	    <input type="text" name="location_title" id="location_title" />
 	    <input type="button" onclick="saveLocation()" value="Save" class="btn btn-primary" />
