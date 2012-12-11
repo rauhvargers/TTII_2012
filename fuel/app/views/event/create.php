@@ -36,7 +36,7 @@
 	$location.change(function(){
 	    if ($(this).val()==-1) {
 		$("#location_title").val(""); //cleaning out the old value
-		$("#locationform").dialog();
+		$("#locationform").dialog({modal:true});
 		
 	    }
 	});
