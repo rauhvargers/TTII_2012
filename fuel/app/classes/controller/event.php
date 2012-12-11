@@ -36,6 +36,8 @@ class Controller_Event extends Controller_Template {
 	$main_content = View::forge("event/list");
 	$main_content->set("event_model", $event_model);
 
+	$this->template->libs_js = array(
+	    "http://code.jquery.com/jquery-1.8.2.js");
 
 	$this->template->page_title = "List of upcoming events";
 	$this->template->page_content = $main_content;
@@ -49,7 +51,7 @@ class Controller_Event extends Controller_Template {
      * Validation rules taken from "Event" model.
      */
     public function action_create() {
-	if ( ! Auth::has_access('events.create') ) {
+	if ( ! Auth::has_access('event.create') ) {
 	//if ($this->_user_id == 0){
 	    Session::set_flash("error", "Only registered users may create events");
 	    Response::redirect("/") and die();

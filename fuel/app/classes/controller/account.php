@@ -29,10 +29,14 @@ class Controller_Account extends Controller_Template {
 	    if ($is_err == false) {
 		//no errors - we can register!
 		$verification_key = md5(mt_rand(0, mt_getrandmax()));
-		$newid = Auth::instance()->create_user(Input::post("usermail"), //username = email
-			Input::post("password"), Input::post("usermail"), 1, //simple user
+		$newid = Auth::instance()->create_user(
+			Input::post("usermail"), //username = email
+			Input::post("password"),
+			Input::post("usermail"),
+			1, //simple user
 			array("verified" => false,
-		    "verification_key" => $verification_key));
+			      "verification_key" => $verification_key)
+			);
 		Session::set_flash("success", "Registration successful!\nYou still have to verify your e-mail address.");
 		$this->action_send_verification_email($newid, Input::post("usermail"), $verification_key);
 		//nothing else to do here

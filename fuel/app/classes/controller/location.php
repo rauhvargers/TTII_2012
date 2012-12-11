@@ -17,8 +17,25 @@ class Controller_Location extends Controller_Template
 
 	public function action_create()
 	{
-		$this->template->title = 'Location &raquo; Create';
-		$this->template->content = View::forge('location/create');
+	    //assumption: this will only be called using ajax
+	    if (!Input::is_ajax()){
+		return Response::forge("Access forbidden, only AJAX calls allowed",403);
+	    }
+	    
+	    if ( ! Auth::has_access("location.create")) {
+		return Response::forge("Only admins allowed here",403);
+	    }
+	    
+	    if (Input::post("location_title", null)!=null) {
+		  $loc = Model_Orm_Location::forge();
+		  $loc->title = Input::post("location_title");
+		  $loc->save();
+		  $ret = array("id"=>$loc->id);
+		  return Response::forge(
+			    Format::forge()->to_json($ret),
+			    200, 
+			    array("Content-Type"=>"application/json"));
+    	    }
 	}
 
 	public function action_view()

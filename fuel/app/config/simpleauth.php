@@ -57,15 +57,17 @@ return array(
 	 */
 	'roles' => array(
 	    "user" => array(
-			"events"
+			"event"
 			    =>array("create", "read", "update","delete"),
 			"country"
 			    =>array("read")),
 	    "admin" => array(
-			"events"
+			"event"
 			    =>array("create", "read", "update","delete"),
 			"country"
-			    =>array("create", "update","delete"))
+			    =>array("create", "update","delete"),
+			"location"
+			    =>array("create", "read", "update","delete"),)
 		/**
 		 * Examples
 		 * ---
