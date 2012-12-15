@@ -3,7 +3,7 @@
 /**
  * Things you can do with an agenda item
  */
-class Controller_Agenda extends Controller_Template {
+class Controller_Agenda extends Controller_Public {
 
     /**
      * Returns a list of event agenda items.

@@ -6,7 +6,7 @@
  * The command used was:
  * > oil generate scaffold country name:string iso_code:string
  */
-class Controller_Country extends Controller_Template {
+class Controller_Country extends Controller_Public {
 
     public function before() {
 	parent::before();

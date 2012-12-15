@@ -1,0 +1,30 @@
+<?php
+
+return array(
+    'ACTION_INDEX_TITLE' => 'Notikumi drīzā nākotnē',
+    'ACTION_INDEX_LOCATION' => 'Notikuma vieta: ',
+    'ADD_EVENT_LINK' => 'Pievienot notikumu',
+    'LINK_SHOW_AGENDA' => 'Rādīt programmu',
+    'ERR_CREATE_AUTH'=> 'Jaunus notikumus var veidot tikai reģistrēti lietotāji',
+    'ACTION_CREATE_CREATED' => 'Izveidots jauns notikums: ',
+    'ACTION_CREATE_TITLE' => 'Jauna notikuma izveide',
+    'ACTION_CREATE_DESCRIBE' => 'Aprakstiet notikumu',
+    'ACTION_CREATE_LABEL_TITLE' => 'Notikuma nosaukums',
+    'ACTION_CREATE_LABEL_DESCRIPTION' => 'Notikuma apraksts',
+    'ACTION_CREATE_LABEL_DATE' => 'Datums',
+    'ACTION_CREATE_LABEL_LOCATION' => 'Notikuma vieta',
+    'ACTION_CREATE_PICK_LOCATION' => 'Izvēlieties notikuma vietu',
+    'ACTION_CREATE_ADD_LOCATION' => 'Jauna vieta...',
+    'ACTION_CREATE_LABEL_POSTER' => 'Plakāts (PDF datne)',
+    'ACTION_CREATE_BUTTON_SAVE' => 'Saglabāt',
+    'ACTION_VIEW_TITLE' => 'Notikuma apskate',
+    'ACTION_VIEW_LABEL_TITLE' => 'Nosaukums',
+    'ACTION_VIEW_LABEL_START' => 'Sākums',
+    'ACTION_VIEW_LABEL_DESCRIPTION' => 'Apraksts',
+    'ACTION_VIEW_NO_DESCRIPTION' => 'Nav apraksta',
+    'ACTION_VIEW_LABEL_AGENDA' => 'Notikuma programma',
+    'ACTION_VIEW_ADD_AGENDA' => 'Pievienot darba kārtības jautājumu',
+    'ACTION_VIEW_EDIT_EVENT' => 'Rediģēt notikumu',
+    'ACTION_VIEW_DELETE_EVENT' => 'Dzēst notikumu',
+    'ACTION_VIEW_BACK' => 'Uz sarakstu'
+    );

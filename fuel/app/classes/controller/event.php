@@ -7,7 +7,7 @@ use \Model_Orm_Event;
  *
  * @author krissr
  */
-class Controller_Event extends Controller_Template {
+class Controller_Event extends Controller_Public {
     private $_auth;
     private $_user_id;
     
@@ -18,12 +18,14 @@ class Controller_Event extends Controller_Template {
 	$userids = $this->_auth->get_user_id();
 	$this->_user_id = $userids[1];
 	
+	//loads messages for event controller
+	Lang::load("event");
+	
     }
     /**
      * Demonstrates reading data through an ORM model
      */
     public function action_index() {
-
 	$event_model = Model_Orm_Event::find("all", array(
 		    //we only want future and current events
 		    "where" => array(
@@ -33,13 +35,13 @@ class Controller_Event extends Controller_Template {
 		    "related" =>
 		    array("agendas", "location")));
 
-	$main_content = View::forge("event/list");
+	$main_content = View::forge("event/index");
 	$main_content->set("event_model", $event_model);
 
 	$this->template->libs_js = array(
 	    "http://code.jquery.com/jquery-1.8.2.js");
 
-	$this->template->page_title = "List of upcoming events";
+	$this->template->page_title = __("ACTION_INDEX_TITLE");
 	$this->template->page_content = $main_content;
     }
 
@@ -53,7 +55,7 @@ class Controller_Event extends Controller_Template {
     public function action_create() {
 	if ( ! Auth::has_access('event.create') ) {
 	//if ($this->_user_id == 0){
-	    Session::set_flash("error", "Only registered users may create events");
+	    Session::set_flash("error", __('ERR_CREATE_AUTH'));
 	    Response::redirect("/") and die();
 	}
 	$data = array(); //to be passed into the view
@@ -72,7 +74,7 @@ class Controller_Event extends Controller_Template {
 
 		$errors = $this->try_get_attachments($newEvent);
 
-		Session::set_flash("success", "New event created: " . $val->validated("title"));
+		Session::set_flash("success", __('ACTION_CREATE_CREATED') . $val->validated("title"));
 		Response::redirect("event/view/" . $newEvent->id);
 	    } else {
 		//validation did not work. 
@@ -80,11 +82,11 @@ class Controller_Event extends Controller_Template {
 		$errors = $this->try_get_attachments();
 		Session::set_flash("error", array_merge($val->error(), $errors));
 	    }
-	    $this->template->title = "Trying to save an event";
+	    $this->template->title = __("ACTION_CREATE_TITLE");
 	    $data["form_key"] = Input::post("form_key");
 	} else {
 	    //the first GET request
-	    $this->template->title = "Creating an event";
+	    $this->template->title = __("ACTION_CREATE_TITLE");
 
 	    //we assign a random value to the form
 	    $data["form_key"] = md5(mt_rand(1000, 10000));
@@ -232,7 +234,7 @@ class Controller_Event extends Controller_Template {
 	//$data["event"] = $event;
 	$event_view = View::forge("event/view");
 	$event_view->set("event", $event);
-	$this->template->title = "Viewing an event";
+	$this->template->title = __("ACTION_VIEW_TITLE");
 	$this->template->page_content = $event_view;
     }
 

@@ -1,4 +1,4 @@
-<h2>New Event</h2>
+<h2><?php echo __("ACTION_CREATE_DESCRIBE")?></h2>
 
 <script type="text/javascript">
     
@@ -30,7 +30,7 @@
     
     //adding new locations with ajax
     $(document).ready(function(){
-	$opt_add = $("<option value='-1'id='addlocation'>Add new location...</option>")
+	$opt_add = $("<option value='-1'id='addlocation'><?php echo __("ACTION_CREATE_ADD_LOCATION")?></option>")
 	var $location = $("#form_location");
 	$location.append($opt_add);
 	$location.change(function(){
@@ -92,7 +92,7 @@
 <fieldset>
 
     <div class="clearfix">
-	<?php echo Form::label('Title of the event', 'title'); ?>
+	<?php echo Form::label(__('ACTION_CREATE_LABEL_TITLE'), 'title'); ?>
 
 	<div class="input">
 	    <?php
@@ -102,7 +102,7 @@
 	</div>
     </div>
     <div class="clearfix">
-	<?php echo Form::label('Description of the event', 'description'); ?>
+	<?php echo Form::label(__('ACTION_CREATE_LABEL_DESCRIPTION'), 'description'); ?>
 
 	<div class="input">
 	    <?php
@@ -111,25 +111,25 @@
 	</div>
     </div>
     <div class="clearfix">
-	<?php echo Form::label('Date', 'start'); ?>
+	<?php echo Form::label(__('ACTION_CREATE_LABEL_DATE'), 'start'); ?>
 	<div class="input">
 	    <?php echo Form::input('start', Input::post('start', isset($event) ? $event->start : ''), array("id" => "start")); ?>
 	</div>
     </div>
 
     <div class="clearfix">
-	<?php echo Form::label('Location', 'location'); ?>
+	<?php echo Form::label(__('ACTION_CREATE_LABEL_LOCATION'), 'location'); ?>
 	<div class="input">
 
 	    <?php
 	    $location_options = array_merge(
-		    array("0" => "Pick a location"), $locations);
+		    array("0" => __("ACTION_CREATE_PICK_LOCATION")), $locations);
 
 
 	    echo Form::select("location", Input::post("location"), $location_options)
 	    ?>
 	</div>
-	<div style="display:none" id="locationform" title="Add new location">
+	<div style="display:none" id="locationform" title="<?php echo __("ACTION_CREATE_ADD_LOCATION")?>">
 	    <label for="location_title">Title</label>
 	    <input type="text" name="location_title" id="location_title" />
 	    <input type="button" onclick="saveLocation()" value="Save" class="btn btn-primary" />
@@ -147,7 +147,7 @@
     <div class="clearfix">
 
 	<?php
-	echo Form::label('Event poster (PDF file)', 'poster');
+	echo Form::label(__('ACTION_CREATE_LABEL_POSTER'), 'poster');
 
 	$existing_file = Session::get("uploaded_file_" . $form_key, null);
 	if ($existing_file != null) {
@@ -165,7 +165,7 @@
 </fieldset>	
 <div class="actions">
     <?php echo Form::hidden("form_key", $form_key); ?>
-    <?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>
+    <?php echo Form::submit('submit', __('ACTION_CREATE_BUTTON_SAVE'), array('class' => 'btn btn-primary')); ?>
 
 </div>
 <?php echo Form::close() ?>

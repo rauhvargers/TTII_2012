@@ -66,11 +66,11 @@ foreach ($event_model as $event) :
     <h3><?php
     echo Html::anchor("event/view/" . $event->id, $event->title);
     ?></h3>
-    <p>Location: <?php echo ($event->location) ? $event->location->title : "(not set)" ?></p>
-    <p>Start: <?php echo Date::create_from_string($event->start, "mysql")->format("%d.%m.%Y, %H:%M"); ?>
+    <p><?php echo __('ACTION_INDEX_LOCATION'). (($event->location) ? $event->location->title : __('NOT_SET')) ?></p>
+    <p><?php echo __('ACTION_INDEX_START') . (Date::create_from_string($event->start, "mysql")->format("%d.%m.%Y, %H:%M")); ?>
     
     <div class="agenda" data-event-id="<?php echo $event->id?>">
-	    Show agenda
+	   <?php echo __('LINK_SHOW_AGENDA')?>
     </div>
     <!--ul>
 	<?php foreach ($event->agendas as $agenda) : ?>
@@ -83,7 +83,7 @@ foreach ($event_model as $event) :
 <?php if (Auth::has_access("event.create")) : ?>
     <p>
 	<?php
-	echo Html::anchor("/event/create/", "Add an event", array("class" => "btn btn-primary"))
+	echo Html::anchor("/event/create/", __("ADD_EVENT_LINK"), array("class" => "btn btn-primary"))
 	?>
 
     </p>

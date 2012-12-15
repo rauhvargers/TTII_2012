@@ -28,7 +28,15 @@ if (isset($title)) {
     </head>
     <body>
 	<header>
-	    <h1><a href="/">&laquo;Eventual&raquo; : an event management system</a></h1>
+	    <div id="setlang">
+		<?php
+		    echo Html::anchor("account/setlang/lv", "LV");
+		    echo " | ";
+		    echo Html::anchor("account/setlang/en", "EN");
+		?>
+		
+	    </div>
+	    <h1><?php echo Html::anchor("/", __("EVENTUAL_TITLE"));?></h1>
 	    <h3><?php
 	if (isset($page_title)) {
 	    echo $page_title;
@@ -45,16 +53,16 @@ if (isset($title)) {
 		if ($user_id[1] != 0) :
 		    ?>
 		<div id="logged-in">
-		    Logged in as <?php echo $auth->get_email(); ?>
+		    <?php echo __("LOGGED_IN_AS") . $auth->get_email(); ?>
 		</div>
 		<div id="logout">
 			<?php
-			echo Html::anchor("account/logout", "Log out");
+			echo Html::anchor("account/logout", __("LOG_OUT"));
 			?>
     		</div>
 		    <?php
 		else :
-		    echo Html::anchor("account/simpleauth", "Not logged in. Would you like to?");
+		    echo Html::anchor("account/simpleauth", __("NOT_LOGGED_IN"));
 		    ?>
 		<?php
 		endif;
@@ -62,8 +70,8 @@ if (isset($title)) {
 	    </aside>
 	    <nav>
 		<ul class="clearfix">
-		    <li><a href="/event/">Events</a></li>
-		    <li><a href="/country/">Countries</a></li>
+		    <li><?php echo Html::anchor('/event', __('MENU_TITLE_EVENTS'))?></li>
+		    <li><?php echo Html::anchor('/country', __('MENU_TITLE_COUNTRIES'))?></li>
 
 		</ul>
 	    </nav>

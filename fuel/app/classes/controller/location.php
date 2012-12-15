@@ -6,7 +6,7 @@
  * 
  * The default action implementations are very simple.
  */
-class Controller_Location extends Controller_Template
+class Controller_Location extends Controller_Public
 {
 
 	public function action_index()

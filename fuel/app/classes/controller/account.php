@@ -5,8 +5,17 @@ use Social\Facebook;
 /**
  * Different ways of authentication
  */
-class Controller_Account extends Controller_Template {
+class Controller_Account extends Controller_Public {
 
+    
+    public function action_setlang($lang=null){
+	//assumes there is an authenticated user
+	if ($lang!=null){
+	    $auth = Auth::instance();
+	    $auth->update_user(array("language"=>$lang));
+	    Response::redirect("/");
+	}
+    }
     public function action_create() {
 	if (Input::method() == "POST") {
 	    $exist_user = DB::select("id")
