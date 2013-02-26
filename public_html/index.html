@@ -13,23 +13,86 @@
     <body>	
 	<section>
 	    <h1>GTravel online travel scheduler</h1>
+	    <h2>Imagine.... </h2>
+	    <p>
+		<img 
+		    src='http://techbeat.com/wp-content/uploads/2013/01/India-Panic-Button-Wristwatch.jpg'
+		    alt="Nice place in India" 
+		    width='305' >
+	    </p>
 	    
 	    <h2>About us</h2>
-	    <p>&laquo;GTravel&raquo; is a small, virtual travel organizer.
+	    <a href='#contacts'>Jump to contact information</a>
+	    <p>&laquo;<b>GTravel</b>&raquo; is a small, virtual <strong>travel organizer</strong>.
 		We can help you keep travel documents such as airline tickets,
 		hotel reservations and itineraries organized. 		
 	    </p>
-	    
+
 	    <h2>How does it work?</h2>
 	    <p>
 		Once you register, you are assigned an automatic e-mail address 
 		<em>yourname@gtravel.com</em>. Just send the travel documents to
 		this address and we'll do the rest.
 	    </p>
-	    
+
+	    <h3>Steps you need to take</h3>
+	    <ol>
+		<li>You buy the ticket online and wait for the confirmation e-mail</li>
+		<li>Once you receive the e-mail, you forward it to yourname@gtravel.com</li>
+		<li>We process the e-mail text an automatically extract the important data
+		    <ol>
+			<li>Date parser analyzes the numbers in text
+			<li>Location parser tries to identify geographical locations
+			<li>Hotel names are recognized, using Booking.com web service
+		    </ol>
+		</li>
+		<li>Voila!</li>
+	    </ol>
+	    <h3>Supported partners</h3>
+	    <ul>		
+		<li>
+		    <h4>Airlines</h4>
+		    <ul>
+			<li>Air Baltic</li>
+			<li>Lufthansa</li>
+			<li>SAS</li>
+			<li>Finnair</li>
+		    </ul>
+		</li>
+		<li>
+		    <h4>Hotels</h4>
+		    <ul>
+			<li>Best Western</li>
+			<li><a href='http://www.radisson.com' 
+			       title='Visit radisson web site online'>Radisson</a></li>
+			<li>Hotel Ibis</li>
+			<li>Hilton Hotels and Resorts</li>
+		    </ul>
+		</li>
+	    </ul>
+
 	    <h2>Is it safe?</h2>
 	    <p>The system is fully automated, no humans are going to read your documents.</p>
-	    
+	    <dl>
+		<dt>Personal data</dt>
+		<dd>We encrypt all the personal data received using contemporary cryptographic
+		    methods (AES-265, RSA)</dd>
+		<dd>If you are afraid about the personal data, you may delete sensitive information
+		    from the email body before you forward it to us.</dd>
+
+		<dt>Physical safety</dt>
+		<dd>Our servers are located in a bunker 90 feet under ground. Armed guards keep
+		    watch 24/7 and even longer, if necessary.</dd>
+
+		<dt>Service level agreement</dt>
+		<dd>We promise 99.99% uptime.
+		    <small>All day, every day, except the four hours a year 
+			when nothing works</small>.
+
+		</dd>
+	    </dl>
+
+
 	    <h2>Anyone else using this service?</h2>
 	    <p>We have quite a lot satisfied users, ranging from a teenage students to 
 		serious business people. Most users are returning customers, who have been
@@ -45,8 +108,55 @@
 	    </blockquote>
 	</section>
 	<section>
-	    <h2>Contact information</h2>
-	    <p>Raina blvd. 19, Riga, Latvia</p>
+	    <h2 id='contacts'>Contact information</h2>
+	    <h3><a href='help.html'>User support</a></h3>
+		
+	    <table border='1'>
+		<thead>
+		    <tr>
+			<th rowspan='2'>Shift</th>
+			<th rowspan='2'>Time</th>
+			<th colspan='2'>Offline contacts</th>		    
+			<th rowspan='2'>Online contact</th>
+		    </tr>
+		    <tr>
+			<th>Name</th>		    
+			<th>Email</th>		    
+		    </tr>
+		</thead> 
+		<tbody>
+		    <tr>
+			<td rowspan='3'>Daytime</td>
+			<td>08:00-13:00</td>
+			<td>Jānis Skudriņš</td>
+			<td><a href='mailto:janis.skudrins@gtravel.com'>janis.skudrins@gtravel.com</a></td>
+			<td><a href='skype:janis_berzins'>janis_berzins</a></td>
+		    </tr>
+		    <tr>
+			<td>13:00-18:00</td>
+			<td>Viesturs Lapsa</td>
+			<td>viesturs.lapsa@gtravel.com</td>
+			<td>skype:viesturs_lapsa</td>
+		    </tr>
+		    <tr>
+			<td>18:00-23:00</td>
+			<td>Antra Smilga</td>
+			<td>antra.smilga@gtravel.com</td>
+			<td>skype:antra_smilga</td>
+		    </tr>
+		    <tr>
+			<td>At night</td>
+			<td>23:00-08:00</td>
+			<td>Jānis Skudriņš</td>
+			<td>janis.skudrins@gtravel.com</td>
+			<td>skype:janis_skudrins</td>
+		    </tr>
+		</tbody>
+	    </table>
+
+	    <p>Raina blvd. 19,<br>
+	       Riga,<br>
+	       Latvia</p>
 	    <pre>
 	    
     ==========================
@@ -60,7 +170,7 @@
 	       
 	    </pre>
 	</section>
-	
+
 	<footer>
 	    &copy; 2013, GTravel.com
 	</footer>
