@@ -94,6 +94,24 @@ class Controller_Demo extends Controller_Template {
     }
     
     /**
+     * A form can be generated without a model as well!
+     * @return form data
+     */
+    public function action_simplefieldset(){
+	$form = Fuel\Core\Fieldset::forge("simple");
+	$form->add("firstname", "Input your name");
+	$form->add("lasttname", "Input your surname");
+	$form->add("submit", "",
+			   array( "type"  =>  "submit",
+				  "value"  =>  "Yap, it's me!" ,
+				  "class"  =>  "btn medium primary" ));
+	$form->repopulate();
+	
+	return Response::forge($form->build());
+	
+    }
+    
+    /**
      * demonstrates how ORM models can be used for loading 
      * DB information as well as creating new items or editing them.
      * @return view data
