@@ -32,8 +32,7 @@ class Controller_Event extends Controller_Public {
 			array('start', '>=', Date::forge()->format("%Y-%m-%d"))
 		    ),
 		    "order_by" => array("start" => "asc"),
-		    "related" =>
-		    array("agendas", "location")));
+		    "related" => array("agendas", "location")));
 
 	$main_content = View::forge("event/index");
 	$main_content->set("event_model", $event_model);
@@ -44,7 +43,7 @@ class Controller_Event extends Controller_Public {
 	$this->template->page_title = __("ACTION_INDEX_TITLE");
 	$this->template->page_content = $main_content;
     }
-
+    
     /**
      * Creation of new events.
      * Works on both the first load, which is typically 
@@ -225,7 +224,9 @@ class Controller_Event extends Controller_Public {
      * @param int $id Database ID of the item
      */
     public function action_view($id = null) {
+	
 	is_null($id) and Response::redirect('Event');
+	
 	$event = Model_Orm_Event::find($id, array("related" =>
 		    array("agendas", "location")));
 
