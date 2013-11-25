@@ -17,16 +17,19 @@ If you decide to change the location, take care to alter the
 .htaccess file (`RewriteBase` parameter).
 
 The system uses "fuel_dev" database. 
-Use "[install.sql](https://github.com/naivists/TTII_2012/blob/master/install.sql)"script to recreate the structure.
-
-Expected database parameters:
+The default configuration expects the following database configuration 
+(change these settings in APPPATH/config/development/db.php if needed.):
 
   - server : localhost
   - database : fuel_dev
   - user : fuel_dev
   - password : fuel_dev
 
-Change these in APPPATH/config/development/db.php if needed.
+The installation procedure expects that the database exists and that 
+it is empty (no tables created).
+
+After you put all the files in web root, execute `php oil refine migrate`. 
+This will create the needed database tables and add sample data to them.
 
 ## What is where
 

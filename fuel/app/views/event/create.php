@@ -1,9 +1,9 @@
 <h2><?php echo __("ACTION_CREATE_DESCRIBE")?></h2>
 
 <script type="text/javascript">
-    
     //form enhancements
     $(document).ready(
+	    
     function(){
 	//the "start" field should be a date (and time) picker
 	$("#start").datetimepicker({
@@ -15,15 +15,15 @@
 	    buttonImageOnly: true});
 	
 	    
-	//	    $("#locationtext").autocomplete({
-	//		source: "http://www.eventual.org/location/search/",
-	//		minLength: 1,
-	//		select: function( event, ui ) {
-	//	                if (ui.item) {
-	//			    $("#locationid").val(ui.item.id);
-	//			}
-	//	            }	
-	//	    });
+	    $("#locationtext").autocomplete({
+		source: "http://www.eventual.org/location/search/",
+		minLength: 1,
+		select: function( event, ui ) {
+			if (ui.item) {
+			    $("#locationid").val(ui.item.id);
+			}
+		    }	
+	    });
 	   
     });
     
@@ -88,7 +88,10 @@
 </script>
 
 
-<?php echo Form::open(array("enctype" => "multipart/form-data")); ?>
+<?php 
+   echo Form::open(
+	    array("enctype" => "multipart/form-data")
+	   ); ?>
 <fieldset>
 
     <div class="clearfix">
@@ -125,8 +128,8 @@
 	    $location_options = array_merge(
 		    array("0" => __("ACTION_CREATE_PICK_LOCATION")), $locations);
 
-
-	    echo Form::select("location", Input::post("location"), $location_options)
+		    
+	    echo Form::select("location", Input::post("location"), $location_options);
 	    ?>
 	</div>
 	<div style="display:none" id="locationform" title="<?php echo __("ACTION_CREATE_ADD_LOCATION")?>">
@@ -136,13 +139,13 @@
 	</div>
     </div>
 
-    <!--div class="clearfix">
+    <div class="clearfix">
     <?php echo Form::label('Location autocompelete', 'locationtext'); ?>
 	<div class="input ui-widget">
 	    <input type="text" name="locationtext" id="locationtext" />
 	    <input type="text" name="locationid" id="locationid" />
 	</div>
-    </div-->
+</div>
 
     <div class="clearfix">
 

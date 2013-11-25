@@ -6,8 +6,8 @@ return array(
 		array(
 			'default' => 
 			array(
-				0 => '001_create_idunnos',
-				1 => '002_create_countries',
+				0 => '001_create_structure',
+				1 => '002_demo_data',
 			),
 		),
 		'module' => 

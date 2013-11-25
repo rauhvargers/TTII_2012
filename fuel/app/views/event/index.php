@@ -60,7 +60,7 @@
 	    xhr.send(null);
 	}
 </script>
-<?php
+    <?php
 foreach ($event_model as $event) :
     ?>
     <h3><?php
@@ -87,4 +87,5 @@ foreach ($event_model as $event) :
 	?>
 
     </p>
- <?php endif?>
+ <?php endif;
+ 

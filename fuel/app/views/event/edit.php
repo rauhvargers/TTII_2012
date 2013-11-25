@@ -69,17 +69,17 @@
 	</div>
     </div>
     
-    <!--div class="clearfix">
+    <div class="clearfix">
     <?php echo Form::label('Location autocompelete', 'locationtext'); ?>
 	<div class="input ui-widget">
 	    
 	    <input type="text" name="locationtext" id="locationtext" />
 	    <input type="text" name="locationid" id="locationid" />
 	</div>
-    </div-->
+    </div>
 </fieldset>	
 <div class="actions">
     <?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>
 
 </div>
-<?php echo Form::close() ?>
+<?php echo Form::close();

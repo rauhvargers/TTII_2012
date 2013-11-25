@@ -7,9 +7,8 @@
 
 $results = array();
 foreach ($locations as $location) {
-    //[ { label: "Choice1", value: "value1" }, ... ]
     $results[]= '{"id":"'.addslashes($location->id).'",'.
-	   '"label":"'.addslashes($location->title).'",'.
-	   '"value":"'.addslashes($location->title).'"}';
+		'"label":"'.addslashes($location->title).'",'.
+		'"value":"'.addslashes($location->title).'"}';
 }
 echo '['. join(",",$results) .']';

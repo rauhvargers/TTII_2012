@@ -54,6 +54,7 @@ class Controller_Location extends Controller_Public
 	    if ($term==null) {
 		$term = Input::get("term");
 	    }
+	    
 	    //only ajax requests served here 
 	    //(! Input::is_ajax()) and Response::redirect("location");
 	    $clean_query =  Security::clean($term);

@@ -26,6 +26,7 @@ class Controller_Event extends Controller_Public {
      * Demonstrates reading data through an ORM model
      */
     public function action_index() {
+	
 	$event_model = Model_Orm_Event::find("all", array(
 		    //we only want future and current events
 		    "where" => array(
