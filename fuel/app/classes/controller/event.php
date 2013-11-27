@@ -143,7 +143,7 @@ class Controller_Event extends Controller_Public {
 		return array(); //no errors here!
 	    }
 	} else {
-	    if (count(Upload::get_errors(0)) > 0)
+	    if (count(Upload::get_errors()) > 0)
 		//there was some problem with the files
 		return array("The uploaded file could not be saved");
 	    else
