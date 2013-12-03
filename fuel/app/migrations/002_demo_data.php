@@ -7,7 +7,7 @@ class Demo_data
 	public function up()
 	{
 	    //we'll need some places where the events can take place
-	    $locations=['Rīga', 'Valmiera', 'Ventspils'];
+	    $locations=array('Rīga', 'Valmiera', 'Ventspils');
 	    foreach ($locations as $location) {
 		$loc = \Model_Orm_Location::forge();
 		$loc->title=$location;
@@ -24,10 +24,10 @@ class Demo_data
 	    $demo_event->save();
 	    
 	    //the event shouldn't be empty - some agenda items
-	    $agenda_items = ['Notikuma pats, pats sākums',
+	    $agenda_items = array('Notikuma pats, pats sākums',
 			     'Kaut kad drusku vēlāk', 
 			     'Vēl mazliet vēlāk',
-			     'Un nu jau arī beigas'];
+			     'Un nu jau arī beigas');
 	    foreach ($agenda_items as $agenda_item) {
 		$demo_agenda = \Model_Orm_Agenda::forge();
 		$demo_agenda->title = $agenda_item;
